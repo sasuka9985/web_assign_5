@@ -85,23 +85,23 @@ $(document).ready(function(){
 function pageNow(i) {
     getWeatherJson("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22"+city[i]+"%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys",
         function(data) {
-            console.log(data);
             $('.temperature').text(fToCel(data.query.results.channel.item.condition.temp));
             $('.date').text(data.query.results.channel.item.forecast[0].date);
             $('.temp').each(function(i,e) {
                 var temp = $(e);
                 temp.text(fToCel(data.query.results.channel.item.forecast[i+1].high)+"~"+fToCel(data.query.results.channel.item.forecast[i + 1].low));
             })
+            var date = data.query.results.channel.item.forecast[0].text;
             $('#condition').text(date);
             skycons.set("today", setIcon(date));
             skycons.set("day1", setIcon(data.query.results.channel.item.forecast[1].text));
             skycons.set("day2", setIcon(data.query.results.channel.item.forecast[2].text));
             skycons.set("day3", setIcon(data.query.results.channel.item.forecast[3].text));
-            var date = data.query.results.channel.item.forecast[0].text;
             $('.time').each(function(i, e) {
                 var time = $(e);
                 time.text(data.query.results.channel.item.forecast[i+1].date);
             })
+            console.log(data);
         });
 }
 
